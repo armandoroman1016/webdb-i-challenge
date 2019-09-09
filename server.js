@@ -52,4 +52,19 @@ server.put('/:id', (req, res) => {
     }
 })
 
+server.delete('/:id', (req, res) =>{
+    const { id } = req.params
+    db('accounts')
+    .where('id', id)
+    .del()
+    .then( deleted => {
+        if(deleted){
+            res.status(204).json(deleted)
+        }else{
+            res.status(404).json({message: "We couldn't find a matching acount"})
+        }
+    })
+    .catch(err => res.status(500).json({message: 'Unexpected Error.'}))
+})
+
 module.exports = server;
